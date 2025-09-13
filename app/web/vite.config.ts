@@ -14,7 +14,7 @@ const alias = {
 export default defineConfig({
   plugins: [react()],
   server: { port: 5173 },
-  base: '',
+  base: './',
   define: {
     global: 'globalThis',
     'process.env': {},
