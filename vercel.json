@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "functions": {
+    "app/web/api/**/*.{js,ts}": {
+      "runtime": "nodejs20.x",
+      "memory": 256,
+      "maxDuration": 10
+    }
+  },
+  "installCommand": "npm --prefix app/web ci || npm --prefix app/web i",
+  "buildCommand": "npm --prefix app/web run build",
+  "outputDirectory": "app/web/dist"
+}
