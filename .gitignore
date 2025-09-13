@@ -8,7 +8,8 @@
 /node_modules/
 /dist/
 npm-debug.log*
-package-lock.json
+# keep lockfiles tracked; comment the next line if you really want to ignore
+# package-lock.json
 
 # Solana keys (keep deploy keys if needed in repo policy)
 **/*.keypair
@@ -18,5 +19,9 @@ package-lock.json
 # OS/editor
 .DS_Store
 .vscode/
+/.idea/
 *.swp
+
+# Web build output
+/app/web/dist/
 

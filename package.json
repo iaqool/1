@@ -12,7 +12,9 @@
     "web:dev": "VITE_PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD VITE_RPC_URL=https://api.devnet.solana.com npm --prefix app/web run dev",
     "web:build": "VITE_PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD VITE_RPC_URL=https://api.devnet.solana.com npm --prefix app/web run build",
     "web:preview": "npm --prefix app/web run preview",
-    "mint:nfts": "tsx scripts/mint_nfts.ts"
+    "mint:nfts": "tsx scripts/mint_nfts.ts",
+    "demo:local": "bash scripts/run-local-demo.sh"
+    ,"dev": "npm run demo:local"
   },
   "devDependencies": {
     "@coral-xyz/anchor": "^0.30.0",

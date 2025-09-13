@@ -1,6 +1,41 @@
 # 1
 # SkinSol RWA — Чек-лист команд для тестирования
 
+## 0️⃣ Локальное демо (Frontend + API)
+
+Быстрый способ поднять UI (Vite) и сервер мок-авторизации/линка (Express) локально:
+
+- Обязательно: экспортируйте FUND_WALLET_SECRET (base58 приватный ключ devnet-кошелька) — нужен для /credit/transfer.
+- По умолчанию используется Devnet RPC: https://api.devnet.solana.com.
+
+Запуск одной командой из корня:
+
+```
+npm run demo:local
+```
+
+Что поднимется:
+- Backend (link/credit): http://localhost:3000
+- Frontend (Vite dev): http://localhost:5173
+
+Переопределяемые переменные окружения:
+- FUND_WALLET_SECRET — base58 секрет (обязательно для кредитования)
+- RPC_URL — Solana RPC (по умолчанию devnet)
+- FRONTEND_URL — http://localhost:5173
+- VITE_PROGRAM_ID — Program ID для UI (по умолчанию Gk85ZcvrX…KxpD)
+- VITE_RPC_URL — RPC для UI (по умолчанию равен RPC_URL)
+- VITE_LINK_SERVER_URL — http://localhost:3000
+
+Поток демонстрации:
+1) Откройте http://localhost:5173 и подключите кошелёк (Phantom/Solflare).
+2) (Опц.) Мок-логин Steam: http://localhost:3000/auth/steam — вернёт вас на фронт с `?steamId=...`.
+3) Нажмите Link Wallet → произойдёт `signMessage(nonce)` и привязка Steam↔Wallet.
+4) Далее: Mint NFT → (опц.) List → Rent → Fetch/Read.
+
+Примечания:
+- Если FUND_WALLET_SECRET не задан, /credit/transfer вернёт ошибку (это ожидаемо).
+- Для записи видео рекомендуется этот режим: стабильнее, чем сборка на Vercel во время разработки.
+
 ## 1️⃣ Локальная сеть (Localnet) — быстрые тесты
 
 **Запуск локальной сети:**
@@ -39,45 +74,80 @@ solana config set --url https://api.devnet.solana.com
 
 **Проверка кошелька и баланса:**
 ```
-solana balance
+<div align="center">
+
+# SkinSol — Web2 ↔ Web3 гейт для геймеров
+
+Токенизируем CS2 скины как NFT на Solana devnet, кладём их в Vault и автоматически выдаём займ в тестовой SOL. Связываем Steam профиль ↔ Solana кошелёк ↔ NFT ↔ ликвидность.
+
+</div>
+
+## 1) Что это и зачем
+
+SkinSol — это быстрый мост между игровыми активами и ончейн-миром. Игрок «заносит» свой CS2 скин, мы токенизируем его как NFT на Solana (devnet), помещаем NFT в Vault и сразу выдаём займ в тестовой SOL на кошелёк игрока. Так рождается связка Web2 (Steam) ↔ Web3 (Solana): профайл ↔ кошелёк ↔ NFT ↔ ликвидность. Проект демонстрирует, как игровые активы могут становиться залогом для мгновенных ончейн-операций.
+
+## 2) Архитектура
+
+- Frontend: React + Vite (подключение Phantom/Solflare, mint NFT, Vault-операции, UI для демо).
+- Backend (локальный): Express API
+	- `/link/nonce`, `/link/verify`, `/link/lookup` — связка Steam ↔ кошелёк через подпись `signMessage`.
+	- `/credit/transfer` — выдача тестового займа (devnet), с демо-фоллбэком airdrop при отсутствии секрета.
+- Solana смарт-контракт (Anchor): аккаунт Vault, методы `initializeVault`, `deposit` и т.п. для хранения состояния и операций с залогом.
+
+Папки:
+- `app/web` — фронтенд
+- `app/server` — локальный backend для линка и кредита
+- `programs/skinsol` — Anchor-программа
+
+## 3) Требования
+
+- Node.js 18+
+- npm
+- Браузер с установленным Phantom (devnet)
+
+## 4) Установка и запуск
+
+```bash
+git clone <repo-url>
+cd <project-folder>
+npm install
+npm run dev
 ```
 
-**Если мало SOL — делаем airdrop:**
-```
-solana airdrop 2
-solana balance
+Создайте файл `.env` в корне и добавьте переменные окружения:
+
+```ini
+FUND_WALLET_SECRET=<base58 приватный ключ от devnet-кошелька>
+RPC_URL=https://api.devnet.solana.com
 ```
 
-**Деплой программы:**
-```
-anchor deploy
+⚠️ Это только devnet, приватники бояться не нужно. Для демо можно сгенерировать новый кошелёк через Solana CLI:
+
+```bash
+solana-keygen new --outfile ~/.config/solana/devnet.json
 ```
 
-**Запуск тестов (Devnet, рекомендовано сейчас):**
+Затем сконвертируйте ключ в base58 (если нужен однострочник — подскажу).
 
-Вариант А — одной командой через npm-скрипт:
-```
-npm run test:devnet
-```
+## 5) Как протестировать (локально)
 
-Вариант Б — вручную через переменные окружения:
-```
-export ANCHOR_PROVIDER_URL=https://api.devnet.solana.com
-export ANCHOR_WALLET=~/.config/solana/devnet.json
-export USE_DEVNET=1
-export PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD
-npm test
-```
+1) Запустить локально:
+	 - `npm run dev` (поднимет backend на :3000 и фронт на :5173)
+2) Открыть UI: http://localhost:5173
+3) Пройти mock Steam-логин (или просто перейти по `/auth/steam`, если настроен ключ) → подключить Phantom (devnet)
+4) Нажать «Mint NFT» — NFT попадёт в Vault
+5) Автоматически получите займ в тестовой SOL на свой кошелёк (через `/credit/transfer`; если секрет не указан — сработает devnet airdrop фоллбэк)
 
-**Проверка Program ID:**
-```
-solana program show <PROGRAM_ID>
-```
+## 6) Полезно знать
 
-**Демо на Devnet:**
-```
-npm run demo:devnet
-```
+- Все транзакции можно смотреть в Solana Explorer (devnet)
+- Если что-то не работает — смотрите логи в терминале (frontend и backend)
+- Пример переменных окружения — `.env.example`
+- Для production-деплоя потребуется отключить airdrop-фоллбэк и указать реальный `FUND_WALLET_SECRET` (devnet/testnet), а также настроить Vercel/инфраструктуру
+
+## 7) Лицензия
+
+MIT (если нужно иное — обновите раздел)
 
 Примечание: демо идемпотентное — повторный запуск не упадёт, если PDA уже создан. PROGRAM_ID можно переопределить через переменную окружения.
 
