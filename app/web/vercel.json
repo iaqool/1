@@ -1,9 +1,11 @@
 {
   "functions": {
-    "api/**/*": {
-      "runtime": "nodejs18.x",
+    "api/**/*.{js,ts}": {
+      "runtime": "nodejs20.x",
       "memory": 256,
       "maxDuration": 10
     }
-  }
+  },
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist"
 }
