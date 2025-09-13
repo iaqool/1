@@ -1,0 +1,32 @@
+{
+  "name": "skinsol",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "test": "mocha",
+    "localnet": "anchor localnet",
+    "test:local": "mocha",
+    "test:devnet": "USE_DEVNET=1 PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD ANCHOR_PROVIDER_URL=https://api.devnet.solana.com ANCHOR_WALLET=~/.config/solana/devnet.json mocha",
+    "demo:devnet": "ANCHOR_PROVIDER_URL=https://api.devnet.solana.com ANCHOR_WALLET=~/.config/solana/devnet.json PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD tsx scripts/demo.ts",
+    "web:install": "npm --prefix app/web i",
+    "web:dev": "VITE_PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD VITE_RPC_URL=https://api.devnet.solana.com npm --prefix app/web run dev",
+    "web:build": "VITE_PROGRAM_ID=Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD VITE_RPC_URL=https://api.devnet.solana.com npm --prefix app/web run build",
+    "web:preview": "npm --prefix app/web run preview",
+    "mint:nfts": "tsx scripts/mint_nfts.ts"
+  },
+  "devDependencies": {
+    "@coral-xyz/anchor": "^0.30.0",
+    "@types/bn.js": "^5.2.0",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "chai": "^6.0.1",
+    "mocha": "^11.7.2",
+    "ts-mocha": "^11.1.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@metaplex-foundation/js": "^0.20.1"
+  }
+}

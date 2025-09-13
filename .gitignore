@@ -1,0 +1,22 @@
+# Rust/Anchor
+/target/
+.anchor/
+**/*.so
+**/*.dSYM
+
+# Node/TypeScript
+/node_modules/
+/dist/
+npm-debug.log*
+package-lock.json
+
+# Solana keys (keep deploy keys if needed in repo policy)
+**/*.keypair
+*.key
+*.pem
+
+# OS/editor
+.DS_Store
+.vscode/
+*.swp
+

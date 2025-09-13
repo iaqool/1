@@ -1,0 +1,20 @@
+
+[programs.localnet]
+skinsol = "Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD"
+
+
+[programs.devnet]
+skinsol = "Gk85ZcvrXHUsYB255MCKHpwcUc8gPp6vSYbHjtUGKxpD"
+
+
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[test]
+startup_wait = 10000
+
+[scripts]
+test = "node_modules/.bin/mocha --require ts-node/register --extension ts -t 100000 \"tests/**/*.ts\""
+

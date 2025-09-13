@@ -1,0 +1,19 @@
+{
+  "name": "skinsol-link-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.7.0",
+    "passport-steam": "^1.0.18",
+    "tweetnacl": "^1.0.3",
+    "bs58": "^5.0.0",
+    "cors": "^2.8.5",
+    "@solana/web3.js": "^1.95.0"
+  }
+}
