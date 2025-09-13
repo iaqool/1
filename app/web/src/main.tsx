@@ -4,6 +4,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { WalletModalProvider } from '@solana/wallet-adapter-react-ui'
 import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'
 import App from './ui/App'
+import { ErrorBoundary } from './ui/ErrorBoundary'
 
 import '@solana/wallet-adapter-react-ui/styles.css'
 import { Buffer } from 'buffer'
@@ -26,12 +27,15 @@ const endpoint = import.meta.env.VITE_RPC_URL || 'https://api.devnet.solana.com'
 
 const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()]
 
+console.log('Booting SkinSol web...')
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>
